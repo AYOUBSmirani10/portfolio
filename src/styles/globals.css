@@ -1,0 +1,100 @@
+/* Lightweight 3D tilt utilities (no new colors; uses existing theme) */
+
+.card-3d {
+	position: relative;
+	transform-style: preserve-3d;
+	transition:
+		transform 250ms ease,
+		box-shadow 250ms ease,
+		border-color 250ms ease;
+	will-change: transform;
+}
+
+.card-3d::before {
+	content: '';
+	position: absolute;
+	inset: 0;
+	border-radius: inherit;
+	pointer-events: none;
+	opacity: 0;
+	transition: opacity 250ms ease;
+	background: linear-gradient(
+		120deg,
+		rgba(255, 255, 255, 0.14),
+		rgba(255, 255, 255, 0) 45%,
+		rgba(255, 255, 255, 0.06)
+	);
+}
+
+.card-3d:hover {
+	transform: perspective(1100px) translateY(-6px) rotateX(4deg) rotateY(-4deg);
+	box-shadow: var(--shadow-lg);
+}
+
+.card-3d:hover::before {
+	opacity: 1;
+}
+
+.card-3d:focus-within {
+	transform: perspective(1100px) translateY(-4px) rotateX(3deg) rotateY(-3deg);
+	box-shadow: var(--shadow-lg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.card-3d,
+	.card-3d::before {
+		transition: none;
+	}
+
+	.card-3d:hover,
+	.card-3d:focus-within {
+		transform: none;
+		box-shadow: none;
+	}
+}
+
+@keyframes flash-border-glow {
+	0% {
+		outline-color: transparent;
+		box-shadow: none;
+		transform: translateY(0);
+	}
+	40% {
+		outline-color: var(--accent-blue);
+		box-shadow: var(--shadow-glow-blue);
+		transform: translateY(-1px);
+	}
+	70% {
+		outline-color: var(--accent-cyan);
+		box-shadow: var(--shadow-glow-cyan);
+		transform: translateY(-1px);
+	}
+	100% {
+		outline-color: transparent;
+		box-shadow: none;
+		transform: translateY(0);
+	}
+}
+
+.flash-border {
+	outline: 2px solid transparent;
+	outline-offset: 2px;
+	animation: flash-border-glow 1200ms ease-out;
+}
+
+.flash-border-long {
+	outline: 2px solid transparent;
+	outline-offset: 2px;
+	animation: flash-border-glow 1200ms ease-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.flash-border {
+		animation: none;
+	}
+
+	.flash-border-long {
+		animation: none;
+	}
+}
+
